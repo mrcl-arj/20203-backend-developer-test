@@ -1,20 +1,22 @@
 package com.marcelo.ZSSN.model;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-@Entity
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@Entity(name = "survivor")
 public class Survivor {
 	
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
 	private String name;
@@ -29,10 +31,11 @@ public class Survivor {
 	private float latitude;
 	
 	private float longitude;
-	
-//	@OneToMany(mappedBy = "survivor", cascade = CascadeType.ALL)
-//	private List<Item> inventory;
-	
+
+	@OneToMany(mappedBy = "survivor", cascade = CascadeType.ALL)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<Item> inventory;
+
 	public long getId() {
 		return id;
 	}
@@ -87,6 +90,14 @@ public class Survivor {
 
 	public void setLongitude(float longitude) {
 		this.longitude = longitude;
+	}
+	
+	public List<Item> getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(List<Item> inventory) {
+		this.inventory = inventory;
 	}
 
 
