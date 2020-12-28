@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,7 +27,11 @@ public class Survivor {
 	
 	private LocalDate dateOfBirth;
 	
-	private boolean healthy;
+	@Column(columnDefinition = "boolean default false")
+	private boolean zombie;
+	
+	@Column(columnDefinition = "int default 0")
+	private int infected;
 
 	private float latitude;
 	
@@ -68,12 +73,20 @@ public class Survivor {
 		this.dateOfBirth = dateOfBirth;
 	}
 	
-	public boolean isHealthy() {
-		return healthy;
+	public boolean isZombie() {
+		return zombie;
 	}
 
-	public void setHealthy(boolean healthy) {
-		this.healthy = healthy;
+	public void setZombie(boolean zombie) {
+		this.zombie = zombie;
+	}
+	
+	public int getInfected() {
+		return infected;
+	}
+
+	public void setInfected(int infected) {
+		this.infected = infected;
 	}
 
 	public float getLatitude() {
@@ -99,6 +112,5 @@ public class Survivor {
 	public void setInventory(List<Item> inventory) {
 		this.inventory = inventory;
 	}
-
 
 }

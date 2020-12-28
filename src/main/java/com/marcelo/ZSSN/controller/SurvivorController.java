@@ -61,10 +61,31 @@ public class SurvivorController {
     		survivor.setLongitude(longitude);
     		survivorRepository.save(survivor);
     		
-    		return new ResponseEntity<>("API ZSSN", HttpStatus.OK);
+    		return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
     	}catch (Exception e) {
-    		return new ResponseEntity<>("API ZSSN", HttpStatus.NOT_MODIFIED);
+    		return new ResponseEntity<>("ERROR", HttpStatus.BAD_REQUEST);
     	}	
     }
+    
+    @RequestMapping(value = "/survivor/infected", method =  RequestMethod.POST)
+    public ResponseEntity<String> infected(@RequestBody JsonNode json){
+    	
+    	long survivor_id = json.get("survivor_id").asLong();
+    	long infected_id = json.get("infected_id").asLong();
+    	
+    	try {
+    		Survivor survivor = survivorRepository.findById(survivor_id).get();
+    		survivor.setInfected(survivor.getInfected()+1);
+    		if(survivor.getInfected()>2)
+    			survivor.setZombie(true);
+    		
+    		survivorRepository.save(survivor);
+    		
+    		return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+    	}catch (Exception e) {
+    		return new ResponseEntity<>("ERROR", HttpStatus.BAD_REQUEST);
+    	}	
+    }
+
 
 }
