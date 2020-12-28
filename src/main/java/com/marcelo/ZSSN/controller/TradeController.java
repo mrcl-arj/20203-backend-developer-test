@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcelo.ZSSN.model.Item;
 import com.marcelo.ZSSN.model.ItemType;
 import com.marcelo.ZSSN.model.Survivor;
+import com.marcelo.ZSSN.repository.ItemRepository;
 import com.marcelo.ZSSN.repository.ItemTypeRepository;
 import com.marcelo.ZSSN.repository.SurvivorRepository;
 
@@ -25,6 +25,9 @@ public class TradeController {
 	
 	@Autowired
     private SurvivorRepository survivorRepository;
+	
+	@Autowired
+    private ItemRepository itemRepository;
 	
 	@Autowired
     private ItemTypeRepository itemTypeRepository;
@@ -40,10 +43,15 @@ public class TradeController {
     	long survivor_id = json.get("survivor_id").asLong();
     	long trader_id = json.get("trader_id").asLong();
     	
+    	Survivor survivor = survivorRepository.findById(survivor_id).get();
+    	Survivor trader = survivorRepository.findById(trader_id).get();
+    	
+    	if(survivor.isZombie() || trader.isZombie()) {
+    		return new ResponseEntity<>("ERROR", HttpStatus.BAD_REQUEST);
+    	}
+    	
     	JsonNode offered_items = json.path("offered_items");
     	JsonNode desired_items = json.path("desired_items");
-    	
-
     	
     	ArrayList<Item> items1 = new ArrayList<Item>();
     	ArrayList<Item> items2 = new ArrayList<Item>();
@@ -68,35 +76,33 @@ public class TradeController {
     		items2.add(aux);
     	});
     	
-//    	System.out.println(items1);
-//    	System.out.println(items2);
     	
     	if(!this.validateAmoutTrade(items1, items2)) {
     		return new ResponseEntity<>("ERROR", HttpStatus.BAD_REQUEST);
     	}
     	
-//    	System.out.println(items1);
+    	System.out.println("survivor");
+    	this.updateItems(items2, items1, survivor.getInventory());
+    	System.out.println("trader");
+    	this.updateItems(items1, items2, trader.getInventory());
     	
     	
     	return new ResponseEntity<>("API ZSSN", HttpStatus.OK);
     }
     
-    public boolean validateAmoutTrade(List<Item> item1, List<Item> item2){
+    public boolean validateAmoutTrade(List<Item> items1, List<Item> items2){
     	int total1 = 0;
     	int total2 = 0;
     	
-    	for(Item item : item1){
+    	for(Item item : items1){
     		int item_points = item.getItemType().getPoints() * item.getAmount();
     		total1 = total1 + item_points;
         }
     	
-    	for(Item item : item2){
+    	for(Item item : items2){
     		int item_points = item.getItemType().getPoints() * item.getAmount();
     		total2 = total2 + item_points;
         }
-    	 
-    	System.out.println(total1);
-    	System.out.println(total2);
     	
     	if(total1 == total2){
     		return true;
@@ -105,5 +111,30 @@ public class TradeController {
     	}
     	
     }
+    
+    public void updateItems(List<Item> removeItems, List<Item> addItems, List<Item> inventory) {
+    	for(Item itemInventory : inventory){
+    		for(Item item : removeItems){
+    			if(item.getItemType().getId().equals(itemInventory.getItemType().getId())) {
+    				System.out.println("remover");
+    				System.out.println("quantidade na troca: " + item.getAmount() );
+    	    		System.out.println("quantidade no inventario: " +itemInventory.getAmount() );
+    	    		itemInventory.setAmount(itemInventory.getAmount()-item.getAmount());
+    	    		itemRepository.save(itemInventory);
+    			}
+    		}
+    		
+    		for(Item item : addItems){
+    			if(item.getItemType().getId().equals(itemInventory.getItemType().getId())) {
+    				System.out.println("adicionar");
+    				System.out.println("quantidade na troca: " +item.getAmount() );
+    	    		System.out.println("quantidade no inventario: " +itemInventory.getAmount() );	
+    	    		itemInventory.setAmount(itemInventory.getAmount()+item.getAmount());
+    	    		itemRepository.save(itemInventory);
+    			}
+    		}
+        }
+    }
+    
 
 }
