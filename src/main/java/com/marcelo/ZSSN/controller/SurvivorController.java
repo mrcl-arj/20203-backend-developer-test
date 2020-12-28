@@ -17,6 +17,8 @@ import com.marcelo.ZSSN.model.Survivor;
 import com.marcelo.ZSSN.repository.ItemRepository;
 import com.marcelo.ZSSN.repository.SurvivorRepository;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 public class SurvivorController {
 	
@@ -26,16 +28,19 @@ public class SurvivorController {
 	@Autowired
     private ItemRepository itemRepository;
 	
+	@ApiOperation(value = "Raiz")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<String> index() {
     	return new ResponseEntity<>("API ZSSN", HttpStatus.OK);
     }
 	
+	@ApiOperation(value = "Listar todos os sobreviventes (infectados ou não)")
     @RequestMapping(value = "/survivor", method = RequestMethod.GET)
     public List<Survivor> getAll() {
     	return survivorRepository.findAll();
     }
     
+	@ApiOperation(value = "Criar um novo sobrevivente")
     @RequestMapping(value = "/survivor/save", method =  RequestMethod.POST)
     public ResponseEntity<String> save(@RequestBody Survivor survivor){
     	try {
@@ -54,6 +59,7 @@ public class SurvivorController {
     	}
     }
     
+	@ApiOperation(value = "Atualizar a posiçao (latidtude, longitude) de um sobrevivente")
     @RequestMapping(value = "/survivor/updateLocation", method =  RequestMethod.POST)
     public ResponseEntity<String> updateLocation(@RequestBody JsonNode json){
     	
@@ -77,6 +83,7 @@ public class SurvivorController {
     	}	
     }
     
+	@ApiOperation(value = "Reportar um sobrevivente como infectado")
     @RequestMapping(value = "/survivor/infected", method =  RequestMethod.POST)
     public ResponseEntity<String> infected(@RequestBody JsonNode json){
     	

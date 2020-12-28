@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.marcelo.ZSSN.repository.SurvivorRepository;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 public class ReportController {
 
 	@Autowired
     private SurvivorRepository survivorRepository;
 	
+	@ApiOperation(value = "Relatorio da porcentagem de infectados")
     @RequestMapping(value = "/report/zombiesPercent", method = RequestMethod.GET)
     public ResponseEntity<String> zombiesPercent() {
     	Long zombies = survivorRepository.zombiesPercent();
@@ -26,6 +29,7 @@ public class ReportController {
     	return new ResponseEntity<>(response , HttpStatus.OK);
     }
 	
+	@ApiOperation(value = "Relatorio da porcentagem de não infectados")
     @RequestMapping(value = "/report/survivorsPercent", method = RequestMethod.GET)
     public ResponseEntity<String> survivorsPercent() {
     	Long survivors = survivorRepository.survivorsPercent();
@@ -35,17 +39,18 @@ public class ReportController {
     	return new ResponseEntity<>(response , HttpStatus.OK);
     }
     
+	@ApiOperation(value = "Relatorio da quantidade média de recursos por sobrevivente")
     @RequestMapping(value = "/report/averageAmountItem", method = RequestMethod.GET)
     public ResponseEntity<String> averageAmountItem() {
     	List<String> total = survivorRepository.averageAmountItem();
     	String response = "";
     	for(String t : total){
     		response = response + t + " | ";
-    		System.out.println(t);
     	}
     	return new ResponseEntity<>(response , HttpStatus.OK);
     }
     
+	@ApiOperation(value = "Relatorio da quantidade de pontods de recursos perdidos por infectados")
     @RequestMapping(value = "/report/pointsLost", method = RequestMethod.GET)
     public ResponseEntity<String> pointsLost() {
     	Long total = survivorRepository.pointsLost();

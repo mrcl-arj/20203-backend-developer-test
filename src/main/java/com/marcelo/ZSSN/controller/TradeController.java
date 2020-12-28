@@ -21,6 +21,8 @@ import com.marcelo.ZSSN.repository.ItemRepository;
 import com.marcelo.ZSSN.repository.ItemTypeRepository;
 import com.marcelo.ZSSN.repository.SurvivorRepository;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 public class TradeController {
 	
@@ -33,12 +35,14 @@ public class TradeController {
 	@Autowired
     private ItemTypeRepository itemTypeRepository;
 	
+	@ApiOperation(value = "Listar todos os itens de um inventario")
     @RequestMapping(value = "/trade/inventory/{survivor_id}", method = RequestMethod.GET)
     public List<Item> inventory(@PathVariable Long survivor_id) {
     	Survivor survivor = survivorRepository.findById(survivor_id).get();
     	return survivor.getInventory();
     }
 	
+	@ApiOperation(value = "Rota para troca de itens")
     @RequestMapping(value = "/trade", method = RequestMethod.POST)
     public ResponseEntity<String> trade(@RequestBody JsonNode json) {
     	long survivor_id = json.get("survivor_id").asLong();
