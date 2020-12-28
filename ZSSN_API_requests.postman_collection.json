@@ -1,0 +1,224 @@
+{
+	"info": {
+		"_postman_id": "cf62a530-e9cf-4715-a977-0eff7e78b251",
+		"name": "ZSSN API requests",
+		"description": "Collection para teste da api ZSSN ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Survivor",
+			"item": [
+				{
+					"name": "localhost:8080/survivor/save",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Marcelo Araujo\",\r\n    \"gender\": \"M\", \r\n    \"dateOfBirth\": \"1994-08-08\", \r\n    \"latitude\": 7.146853, \r\n    \"longitude\": -8.689543,\r\n    \"inventory\": [\r\n        {        \r\n            \"itemType\":{\"id\":2},  \r\n            \"amount\":3   \r\n        },\r\n        {        \r\n            \"itemType\":{\"id\":3},  \r\n            \"amount\":1   \r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/survivor/save",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"survivor",
+								"save"
+							]
+						},
+						"description": "Criar um novo sobrevivente"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/survivor/updateLocation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 2,\r\n    \"latitude\": 2.36521, \r\n    \"longitude\": -1.35218\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/survivor/updateLocation",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"survivor",
+								"updateLocation"
+							]
+						},
+						"description": "Atualizar a posiçao (latitude, longitude) de um sobrevivente"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/survivor/infected",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"survivor_id\": 2,\r\n    \"infected_id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/survivor/infected",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"survivor",
+								"infected"
+							]
+						},
+						"description": "Reportar um sobrevivente como infectado"
+					},
+					"response": []
+				}
+			],
+			"description": "Grupos de rotas de sobreviventes"
+		},
+		{
+			"name": "Trade",
+			"item": [
+				{
+					"name": "localhost:8080/trade/",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"survivor_id\": 1,\r\n    \"trader_id\": 5,\r\n    \"offered_items\":[\r\n        {\r\n            \"itemType_id\": 1,  \r\n            \"amount\": 1 \r\n        },\r\n        {\r\n            \"itemType_id\": 3,  \r\n            \"amount\": 1 \r\n        }\r\n    ],\r\n    \"desired_items\":[\r\n        {\r\n            \"itemType_id\": 4,  \r\n            \"amount\": 6 \r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/trade/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"trade",
+								""
+							]
+						},
+						"description": "Rota para troca de itens"
+					},
+					"response": []
+				}
+			],
+			"description": "Rotas relacionadas as trocas entre sobreviventes"
+		},
+		{
+			"name": "Report",
+			"item": [
+				{
+					"name": "localhost:8080/report/zombiesPercent",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/report/zombiesPercent",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"report",
+								"zombiesPercent"
+							]
+						},
+						"description": "Relatorio da porcentagem de infectados"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/report/zombiesPercent",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/report/survivorsPercent",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"report",
+								"survivorsPercent"
+							]
+						},
+						"description": "Relatorio da porcentagem de não infectados"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/report/zombiesPercent",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/report/averageAmountItem",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"report",
+								"averageAmountItem"
+							]
+						},
+						"description": "Relatorio da quantidade média de recursos por sobrevivente"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/report/zombiesPercent",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/report/pointsLost",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"report",
+								"pointsLost"
+							]
+						},
+						"description": "Relatorio da quantidade de pontods de recursos perdidos por infectados"
+					},
+					"response": []
+				}
+			],
+			"description": "Rotas relacionadas aos relatorios"
+		}
+	]
+}

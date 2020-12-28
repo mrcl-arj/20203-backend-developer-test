@@ -59,7 +59,7 @@ public class SurvivorController {
     	}
     }
     
-	@ApiOperation(value = "Atualizar a posiçao (latidtude, longitude) de um sobrevivente")
+	@ApiOperation(value = "Atualizar a posiçao (latitude, longitude) de um sobrevivente")
     @RequestMapping(value = "/survivor/updateLocation", method =  RequestMethod.POST)
     public ResponseEntity<String> updateLocation(@RequestBody JsonNode json){
     	
