@@ -2,6 +2,7 @@ package com.marcelo.ZSSN.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,11 +44,18 @@ public class TradeController {
     	long survivor_id = json.get("survivor_id").asLong();
     	long trader_id = json.get("trader_id").asLong();
     	
-    	Survivor survivor = survivorRepository.findById(survivor_id).get();
-    	Survivor trader = survivorRepository.findById(trader_id).get();
+    	Optional<Survivor> survivorOp = survivorRepository.findById(survivor_id);
+    	if(!survivorOp.isPresent())
+    		return new ResponseEntity<>("ERROR: sobrevivente não encontrado", HttpStatus.BAD_REQUEST);
+    	Survivor survivor = survivorOp.get();
+    	
+    	Optional<Survivor> traderOp = survivorRepository.findById(trader_id);
+    	if(!traderOp.isPresent())
+    		return new ResponseEntity<>("ERROR: sobrevivente não encontrado", HttpStatus.BAD_REQUEST);
+    	Survivor trader = traderOp.get();
     	
     	if(survivor.isZombie() || trader.isZombie()) {
-    		return new ResponseEntity<>("ERROR", HttpStatus.BAD_REQUEST);
+    		return new ResponseEntity<>("ERROR: zombies nao fazem trocas", HttpStatus.BAD_REQUEST);
     	}
     	
     	JsonNode offered_items = json.path("offered_items");
@@ -87,7 +95,7 @@ public class TradeController {
     	this.updateItems(items1, items2, trader.getInventory());
     	
     	
-    	return new ResponseEntity<>("API ZSSN", HttpStatus.OK);
+    	return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
     }
     
     public boolean validateAmoutTrade(List<Item> items1, List<Item> items2){
