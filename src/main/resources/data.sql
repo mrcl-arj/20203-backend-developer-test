@@ -5,7 +5,7 @@ INSERT INTO item_type VALUES (4, 'Ammo',1);
 
 
 INSERT INTO survivor VALUES (1, '1978-01-24', 'M', 0, 7.146853, -8.689543, 'Rick Grimes', false);
-INSERT INTO item VALUES (1, 3, 4, 1);
+INSERT INTO item VALUES (1, 3, 3, 1);
 INSERT INTO item VALUES (2, 7, 1, 1);
 
 INSERT INTO survivor VALUES (2, '1978-01-24', 'M', 0, 7.146853, -8.689543, 'Daryl Dixon', false);
